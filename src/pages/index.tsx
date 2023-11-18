@@ -3,8 +3,12 @@ import Link from "next/link";
 
 import { api } from "~/utils/api";
 
-export default function Home() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
+const Home = () => {
+  // const hello = api.post.hello.useQuery({ text: "from tRPC" });
+  // console.log(hello.data);
+
+  const allBlogs = api.post.getAllBlogs.useQuery();
+  console.log("allBlogs" ,allBlogs.data);
 
   return (
     <>
@@ -19,15 +23,19 @@ export default function Home() {
             <span className="text-[hsl(280,100%,70%)]">T3</span>App ブログ
           </h1>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className="mb-2 text-2xl font-bold">タイトル</h3>
-              <div className="mb-2 text-lg">本文</div>
-              <span className="text-base text-gray-400">2023/11/18</span>
-            </Link>
+            {allBlogs.data?.map((b) => {
+              return (
+                <Link
+                  className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+                  href={`/blog/${b.id}`}
+                  key={b.id}
+                >
+                  <h3 className="mb-2 text-2xl font-bold">{b.title}</h3>
+                  <div className="mb-2 text-lg">{b.description}</div>
+                  <span className="text-base text-gray-400">{b.createdAt.toLocaleDateString()}</span>
+                </Link>
+              )
+            })}
           </div>
           
         </div>
@@ -35,3 +43,5 @@ export default function Home() {
     </>
   );
 }
+
+export default Home;
