@@ -4,9 +4,6 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 
 const Home = () => {
-  // const hello = api.post.hello.useQuery({ text: "from tRPC" });
-  // console.log(hello.data);
-
   const allBlogs = api.post.getAllBlogs.useQuery();
   console.log("allBlogs" ,allBlogs.data);
 
@@ -22,11 +19,11 @@ const Home = () => {
           <h1 className="text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem] mb-10">
             <span className="text-[hsl(280,100%,70%)]">T3</span>App ブログ
           </h1>
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
             {allBlogs.data?.map((b) => {
               return (
                 <Link
-                  className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+                  className="flex max-w-full flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
                   href={`/blog/${b.id}`}
                   key={b.id}
                 >
@@ -37,7 +34,11 @@ const Home = () => {
               )
             })}
           </div>
-          
+          <div className="mt-12 text-center">
+            <Link href="/postBlog" className="rounded-md bg-orange-500 px-6 py-3 font-medium">
+              投稿する
+            </Link>
+          </div>
         </div>
       </main>
     </>
