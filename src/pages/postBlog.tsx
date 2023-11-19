@@ -7,7 +7,11 @@ const PostBlog = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const allBlogs = api.post.getAllBlogs.useQuery();
-  const postBlog = api.post.postBlog.useMutation();
+  const postBlog = api.post.postBlog.useMutation({ // たまに表示できない時があるのでリフレッシュ処理を挟む
+    onSettled: () => {
+      allBlogs.refetch();
+    }
+  });
   const route = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {

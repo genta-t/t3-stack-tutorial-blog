@@ -7,9 +7,22 @@ const DetailPage = () => {
   const { id } = router.query;
   const parseNumberId = Number(id);
   const detailBlog = api.post.getDetailBlog.useQuery({ id: parseNumberId });
+  const allBlogs = api.post.getAllBlogs.useQuery();
+  const deleteBlog = api.post.deleteBlog.useMutation({ // たまに表示できない時があるのでリフレッシュ処理を挟む
+    onSettled: () => {
+      allBlogs.refetch();
+    }
+  });
 
   const handleDelete = () => {
-    
+    if (window.confirm("本当に削除しますか？？")) {
+      try {
+        deleteBlog.mutate({ id: parseNumberId });
+        router.push("/");
+      } catch(err) {
+        console.log(err)
+      }
+    }
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
