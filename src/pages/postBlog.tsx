@@ -9,15 +9,15 @@ const PostBlog = () => {
   const allBlogs = api.post.getAllBlogs.useQuery();
   const postBlog = api.post.postBlog.useMutation({ // たまに表示できない時があるのでリフレッシュ処理を挟む
     onSettled: () => {
-      allBlogs.refetch();
+      void allBlogs.refetch();
     }
   });
   const route = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(titleRef.current?.value); //入力した時のログ
-    console.log(descriptionRef.current?.value); //入力した時のログ
+    // console.log(titleRef.current?.value); //入力した時のログ
+    // console.log(descriptionRef.current?.value); //入力した時のログ
     
     if (titleRef.current && descriptionRef.current) {
       postBlog.mutate({
@@ -25,7 +25,7 @@ const PostBlog = () => {
         description: descriptionRef.current.value,
       });
     };
-    route.push("/");
+    void route.push("/");
   };
 
   return(

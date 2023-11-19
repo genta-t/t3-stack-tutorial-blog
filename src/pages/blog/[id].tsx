@@ -10,15 +10,15 @@ const DetailPage = () => {
   const allBlogs = api.post.getAllBlogs.useQuery();
   const deleteBlog = api.post.deleteBlog.useMutation({ // たまに表示できない時があるのでリフレッシュ処理を挟む
     onSettled: () => {
-      allBlogs.refetch();
+      void allBlogs.refetch();
     }
   });
 
   const handleDelete = () => {
     if (window.confirm("本当に削除しますか？？")) {
       try {
-        deleteBlog.mutate({ id: parseNumberId });
-        router.push("/");
+        void deleteBlog.mutate({ id: parseNumberId });
+        void router.push("/");
       } catch(err) {
         console.log(err)
       }
