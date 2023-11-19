@@ -8,6 +8,7 @@ const PostBlog = () => {
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const allBlogs = api.post.getAllBlogs.useQuery();
   const postBlog = api.post.postBlog.useMutation();
+  const route = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,6 +21,7 @@ const PostBlog = () => {
         description: descriptionRef.current.value,
       });
     };
+    route.push("/");
   };
 
   return(
